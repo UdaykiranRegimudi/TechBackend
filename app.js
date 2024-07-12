@@ -2,9 +2,14 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from "mongoose";
 import dotenv from 'dotenv'
-import {chatbot} from './routes/chatbot.js'
-import {register} from './routes/Register.js'
-import Registration from './model/Registation.js'
+import {chatbot} from './routes/Chatbot.js'
+import { Email } from './routes/Email.js';
+import { CourseRegister } from './routes/CourseRegister.js';
+import {HackathonRegister} from './routes/HackathonRegister.js'
+import {Course} from './routes/Course.js'
+import { StudentData } from './routes/Student.js';
+import { adminRouter } from './routes/Admin.js';
+import { Hackathon } from './routes/Hackathon.js';
 
 
 dotenv.config();
@@ -28,40 +33,14 @@ app.use(cors())
 
 
 app.use("/chatbot",chatbot)
-app.use("/register",register)
+app.use("/email",Email)
+app.use("/courseRegister",CourseRegister)
+app.use("/hackathonRegister",HackathonRegister)
+app.use("/course",Course)
+app.use("/student",StudentData)
+app.use("/admin",adminRouter)
+app.use("/hackathon",Hackathon)
 
-app.get('/register',async(req,res) =>{
-
-})
-
-
-app.post('/register', async (req, res) => {
-  try {
-    const { name, branch, section, year, email, course, courseId } = req.body;
-
-    const existingRegistration = await Registration.findOne({ email, course });
-
-    if (existingRegistration) {
-      return res.status(400).json({ message: 'Email and course combination already exists' });
-    }
-
-    const newRegistration = new Registration({
-      name,
-      branch,
-      section,
-      year,
-      email,
-      course,
-      courseId
-    });
-
-    await newRegistration.save();
-
-    res.status(200).json({ message: 'Registration successful!' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error registering', error });
-  }
-});
 
 
 app.listen(3000,()=>{

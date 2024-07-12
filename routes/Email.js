@@ -8,7 +8,7 @@ import express from 'express'
 const router = express();
 
 router.use(cors());
-router.post('/send-email', (req, res) => {
+router.post('/', (req, res) => {
   const { email, subject,studentName,courseName,startDate,endDate } = req.body;
   console.log(req.body)
 
@@ -67,4 +67,4 @@ router.post('/send-email', (req, res) => {
   });
 });
 
-export { router as register };
+export { router as Email };
